@@ -1,13 +1,11 @@
-# missSurrogate
-
 <p style="display:inline-block;">
   <img src="miss_surrogate_hex.png" width="200" title="a woman with a tiara and pageant sash that says 'Miss Surrogate'">
-  <h1>Missing Surrogates</h1>
+  <h1>missSurrogate: Surrogate marker validation with missing data</h1>
 </p>
 
 ## Package Installation
 
-Installation of the `possum` from GitHub requires the
+Installation of the `missSurrogate` from GitHub requires the
 [`devtools`](https://www.r-project.org/nosvn/pandoc/devtools.html)
 package and can be done in the following way.
 
