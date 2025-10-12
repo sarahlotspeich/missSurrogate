@@ -1,6 +1,6 @@
 <p style="display:inline-block;">
   <img src="miss_surrogate_hex.png" width="200" title="a woman with a tiara and pageant sash that says 'Miss Surrogate'">
-  <h1>missSurrogate: Surrogate marker validation with missing data</h1>
+  <h1>Surrogate marker validation with missing data</h1>
 </p>
 
 ## Package Installation
