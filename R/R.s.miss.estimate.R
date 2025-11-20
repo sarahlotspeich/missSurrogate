@@ -1,4 +1,6 @@
-R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wone = NULL, wzero = NULL, conv_res = NULL, type, max_it, tol, ipw_formula = NULL) {
+R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero,
+                             wone = NULL, wzero = NULL, conv.res = NULL, type,
+                             max.it, tol, ipw.formula = NULL) {
   ## Define sample sizes
   none = length(yone)
   nzero = length(yzero)
@@ -17,12 +19,12 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
 
   # Define TRUE/FALSE use IPW based on non-null weights supplied
   ipw = (!is.null(wone) & !is.null(wzero)) || ## either weights were supplied
-    !is.null(ipw_formula) ## or the model formula was
+    !is.null(ipw.formula) ## or the model formula was
 
   # Estimate parameters and SEs
   if (ipw) {
-    ## If ipw_formula is not NULL, re-calculate weights
-    if (!is.null(ipw_formula) & is.null(wone) & is.null(wzero)) {
+    ## If ipw.formula is not NULL, re-calculate weights
+    if (!is.null(ipw.formula) & is.null(wone) & is.null(wzero)) {
       ### Define vectors of variables for model (all of them just in case)
       m = c(mone, mzero)
       z = rep(x = c(1, 0), times = c(length(sone), length(szero)))
@@ -30,7 +32,7 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
       y = c(yone, yzero)
 
       ### Fit the IPW model
-      ipw_fit = glm(formula = as.formula(ipw_formula),
+      ipw_fit = glm(formula = as.formula(ipw.formula),
                     data = data.frame(m, z, s, y),
                     family = "binomial")
 
@@ -54,8 +56,8 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
                                   yone = yone,
                                   yzero = yzero,
                                   nonparam = TRUE,
-                                  conv_res = conv_res,
-                                  max_it = max_it,
+                                  conv.res = conv.res,
+                                  max.it = max.it,
                                   tol = tol)
   }
 
