@@ -12,20 +12,20 @@
 #' @param tol (only for SMLE) scalar; tolerance between iterations in the EM algorithm used to define convergence, the default is \code{1E-3}.
 #' @param conf.int logical; if \code{TRUE}, variance estimates and 95% confidence intervals are included in output; if \code{FALSE} (the default), only point estimates are.
 #' @param ipw.formula (only for IPW) formula; if \code{conf.int = TRUE} and using IPW, the logistic regression formula needed to recalculate the probabilities of non-missing surrogates are needed.
-#' @return A list is returned:
-#' \itemize{
-#' \item{delta}{Estimated average treatment effect on the primary outcome.}
-#' \item{delta.s}{Estimated average treatment effect on the surrogate marker.}
-#' \item{R.s}{Estimated proportion of treatment effect on the primary outcome explained by the treatment effect on a surrogate marker.}
-#' \item{delta.var}{Estimated variance for \code{delta}.}
-#' \item{delta.s.var}{Estimated variance for \code{delta.s}.}
-#' \item{R.s.var}{Estimated variance for \code{R.s}.}
-#' \item{conf.int.normal.delta}{95\% confidence interval for \code{delta} based on the normal approximation.}
-#' \item{conf.int.quantile.delta}{95\% confidence interval for \code{delta} based on quantiles.}
-#' \item{conf.int.normal.delta.s}{95\% confidence interval for \code{delta.s} based on the normal approximation.}
-#' \item{conf.int.quantile.delta.s}{95\% confidence interval for \code{delta.s} based on quantiles.}
-#' \item{conf.int.normal.R.s}{95\% confidence interval for \code{R.s} based on the normal approximation.}
-#' \item{conf.int.quantile.R.s}{95\% confidence interval for \code{R.s} based on quantiles.}
+#' @return A list with the following elements:
+#' \describe{
+#'   \item{delta}{Estimated average treatment effect on the primary outcome.}
+#'   \item{delta.s}{Estimated average treatment effect on the surrogate marker.}
+#'   \item{R.s}{Estimated proportion of treatment effect on the primary outcome explained by the treatment effect on a surrogate marker.}
+#'   \item{delta.var}{Estimated variance for \code{delta}.}
+#'   \item{delta.s.var}{Estimated variance for \code{delta.s}.}
+#'   \item{R.s.var}{Estimated variance for \code{R.s}.}
+#'   \item{conf.int.normal.delta}{95\% confidence interval for \code{delta} based on the normal approximation.}
+#'   \item{conf.int.quantile.delta}{95\% confidence interval for \code{delta} based on quantiles.}
+#'   \item{conf.int.normal.delta.s}{95\% confidence interval for \code{delta.s} based on the normal approximation.}
+#'   \item{conf.int.quantile.delta.s}{95\% confidence interval for \code{delta.s} based on quantiles.}
+#'   \item{conf.int.normal.R.s}{95\% confidence interval for \code{R.s} based on the normal approximation.}
+#'   \item{conf.int.quantile.R.s}{95\% confidence interval for \code{R.s} based on quantiles.}
 #' }
 #' @export
 

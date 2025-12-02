@@ -17,12 +17,12 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
 
   # Estimate parameters and SEs
   if (mean(mone) == 1 & mean(mzero) == 1) { ## Check for no missing data, in which case fit the usual
-    est_res = R.s.estimate(sone = sone,
-                           szero = szero,
-                           yone = yone,
-                           yzero = yzero,
-                           type = type,
-                           conf.int = FALSE)
+    est_res = Rsurrogate::R.s.estimate(sone = sone,
+                                       szero = szero,
+                                       yone = yone,
+                                       yzero = yzero,
+                                       type = type,
+                                       conf.int = FALSE)
   } else { ## Otherwise, use IPW or SMLE to correct for it
     # Define TRUE/FALSE use IPW based on non-null weights supplied
     ipw = (!is.null(wone) & !is.null(wzero)) || ## either weights were supplied
