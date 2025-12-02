@@ -1,6 +1,4 @@
-R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero,
-                             wone = NULL, wzero = NULL, conv.res = NULL, type,
-                             max.it, tol, ipw.formula = NULL) {
+R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wone = NULL, wzero = NULL, conv_res = NULL, type, max.it, tol, ipw.formula = NULL) {
   ## Define sample sizes
   none = length(yone)
   nzero = length(yzero)
@@ -32,12 +30,12 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero,
       y = c(yone, yzero)
 
       ### Fit the IPW model
-      ipw_fit = glm(formula = as.formula(ipw.formula),
+      ipw.fit = glm(formula = as.formula(ipw.formula),
                     data = data.frame(m, z, s, y),
                     family = "binomial")
 
       ### Get estimated weights (probabilities of being non-missing) for each observation
-      w = 1 / predict(object = ipw_fit,
+      w = 1 / predict(object = ipw.fit,
                       type = "response")
 
       ### Split weights into vectors for treatment/control
@@ -56,7 +54,7 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero,
                                   yone = yone,
                                   yzero = yzero,
                                   nonparam = TRUE,
-                                  conv.res = conv.res,
+                                  conv_res = conv_res,
                                   max.it = max.it,
                                   tol = tol)
   }

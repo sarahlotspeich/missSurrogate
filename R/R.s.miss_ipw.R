@@ -1,4 +1,4 @@
-# Inverse probability weighting estimators -- type = "model" or "roboust"
+# Inverse probability weighting estimators -- type = "model" or "robust"
 R.s.miss_ipw = function(sone, szero, yone, yzero, wone, wzero, type) {
   ## Define non-missingness indicators for the two treatment groups
   mone = as.numeric(!is.na(sone))
@@ -10,15 +10,13 @@ R.s.miss_ipw = function(sone, szero, yone, yzero, wone, wzero, type) {
 
   ## Calculate PTE
   if (type == "robust") {
-    delta = sum(wone[mone == 1] * yone[mone == 1]) / none -
-      sum(wzero[mzero == 1] * yzero[mzero == 1]) / nzero
-    delta_S = delta.s.single(sone = sone[mone == 1],
-                             szero = szero[mzero == 1],
-                             yone = yone[mone == 1],
-                             yzero = yzero[mzero == 1],
-                             weight.1 = wone[mone == 1],
-                             weight.0 = wzero[mzero == 1],
-                             n0.all = nzero)
+    delta = mean(yone) - mean(yzero)
+    delta_S = delta.s.single.ipw(sone = sone,
+                             szero = szero,
+                             yone = yone,
+                             yzero = yzero,
+                             weight.1 = wone,
+                             weight.0 = wzero)
     R_S = 1 - delta_S / delta
 
     ## Return

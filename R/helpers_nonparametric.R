@@ -18,42 +18,30 @@ pred.smooth <-function(zz,zi.one, bw=NULL,y1, weight=NULL) {
   return(sum(Kern.FUN(zz,zi.one,bw=bw)*y1*(weight))/sum(Kern.FUN(zz,zi.one,bw=bw)*weight))
 }
 
-delta.s.single = function(sone,szero,yone,yzero, h.select = NULL, weight.1 = NULL, weight.0=NULL, n0.all=NULL) {
-  #we can talk about the bandwidth later, this default should work ok
-  if(is.null(h.select)) {h.select = bw.nrd(sone)*(length(sone)^(-0.25))
+delta.s.single.ipw = function(sone,szero,yone,yzero, h.select = NULL, weight.1, weight.0) {
+	s1.observed = sone[!is.na(sone)]
+  	y1.observed = yone[!is.na(sone)] 
+  	s0.observed = szero[!is.na(szero)]
+ 	w1.observed = weight.1[!is.na(sone)]
+ 	w0.observed = weight.0[!is.na(szero)]
+ 	
+  	if(is.null(h.select)) {h.select = bw.nrd(s1.observed)*(length(s1.observed)^(-0.25))
   }
-  if(is.null(weight.1) & is.null(weight.0)){
-    mu.1.s0 = sapply(szero,pred.smooth,zz=sone, bw=h.select, y1=yone)
+  
+  mu.1.s0 = sapply(s0.observed,pred.smooth,zz=s1.observed, bw=h.select, y1=y1.observed, weight=w1.observed)
     if(sum(is.na(mu.1.s0))>0){
       print(paste("Note: ", sum(is.na(mu.1.s0)), " values extrapolated."))
-      c.mat = cbind(szero, mu.1.s0)
+      c.mat = cbind(s0.observed, mu.1.s0)
       for(o in 1:length(mu.1.s0)) {
         if(is.na(mu.1.s0[o])){
-          distance = abs(szero - szero[o])
+          distance = abs(s0.observed - s0.observed[o])
           c.temp = cbind(c.mat, distance)
           c.temp = c.temp[!is.na(c.temp[,2]),]  #all rows where mean is not na
           new.est = c.temp[c.temp[,3] == min(c.temp[,3]), 2]
           mu.1.s0[o] = new.est[1]   #in case there are multiple matches
         }
       }}
-    delta.s = mean(mu.1.s0) - mean(yzero)
-  }
-  if(!is.null(weight.1) & !is.null(weight.0)){
-    mu.1.s0 = sapply(szero,pred.smooth,zz=sone, bw=h.select, y1=yone, weight=weight.1)
-    if(sum(is.na(mu.1.s0))>0){
-      print(paste("Note: ", sum(is.na(mu.1.s0)), " values extrapolated."))
-      c.mat = cbind(szero, mu.1.s0)
-      for(o in 1:length(mu.1.s0)) {
-        if(is.na(mu.1.s0[o])){
-          distance = abs(szero - szero[o])
-          c.temp = cbind(c.mat, distance)
-          c.temp = c.temp[!is.na(c.temp[,2]),]  #all rows where mean is not na
-          new.est = c.temp[c.temp[,3] == min(c.temp[,3]), 2]
-          mu.1.s0[o] = new.est[1]   #in case there are multiple matches
-        }
-      }}
-    delta.s = sum((weight.0)*mu.1.s0)/n0.all-sum((weight.0)*yzero)/n0.all
-  }
+    delta.s = sum(w0.observed*mu.1.s0)/sum(w0.observed)- mean(yzero)
   return(delta.s)
 }
 

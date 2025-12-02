@@ -39,7 +39,7 @@ R.s.miss = function(sone, szero, yone, yzero, wone = NULL, wzero = NULL,
   # Estimate standard errors
   ## Bootstrap resampling
   if (conf.int) {
-    se_res = R.s.miss.se.boot(num_boot = 500, conv.res = est_res,
+    se_res = R.s.miss.se.boot(num_boot = 500, conv_res = est_res,
                               sone = sone, szero = szero, yone = yone, yzero = yzero,
                               type = type, max.it = max.it, tol = tol, ipw.formula = ipw.formula)
   } else {

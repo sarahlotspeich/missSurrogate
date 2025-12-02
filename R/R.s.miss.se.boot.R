@@ -1,5 +1,5 @@
 R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
-                            type, ipw, smle, max_it, tol, ipw_formula) {
+                            type, ipw, smle, max.it, tol, ipw.formula) {
   # Build long dataset: (y, z, s, w, m)
   long_dat = data.frame(y = c(yone, yzero),
                         z = rep(x = c(1, 0),
@@ -25,9 +25,9 @@ R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
     boot_quant[b, ] = boot_R.s.miss(data = long_dat,
                                     indices = ind_b,
                                     type = type,
-                                    ipw_formula = ipw_formula,
+                                    ipw.formula = ipw.formula,
                                     conv_res = NULL,
-                                    max_it = max_it,
+                                    max.it = max.it,
                                     tol = tol)
   }
 
@@ -69,3 +69,33 @@ R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
     )
   )
 }
+
+
+# Bootstrap resampling SEs
+boot_R.s.miss <- function(data, indices, type, ipw.formula, conv_res, max.it, tol) {
+  ## Resample data with replacement (but stratified on treatment)
+  d <- data[indices, ]  
+  
+  ### Split into vectors 
+  which_zzero = which(d$z == 0)
+  which_zone = which(d$z == 1)
+  Sd_zero = d$s[which_zzero]
+  Sd_one = d$s[which_zone]
+  Yd_zero = d$y[which_zzero]
+  Yd_one = d$y[which_zone]
+  
+  res_d = R.s.miss.estimate(sone = Sd_one, 
+                            szero = Sd_zero, 
+                            yone = Yd_one, 
+                            yzero = Yd_zero, 
+                            wone = NULL, 
+                            wzero = NULL, 
+                            conv_res = conv_res, 
+                            type = type, 
+                            max.it = max.it, 
+                            tol = tol, 
+                            ipw.formula = ipw.formula)
+  
+  return(with(res_d, c(delta, delta.s, R.s)))
+}
+

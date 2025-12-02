@@ -1,6 +1,6 @@
 # Perturbation resampling SEs
 R.s.miss.se.pert = function(num_pert, conv_res, sone, szero, yone, yzero,
-                            ipw_formula, type, max_it, tol) {
+                            ipw.formula, type, max.it, tol) {
   # Create (n0 + n1) x num_pert matrix of perturbations
   weight_perturb = matrix(rexp(n = num_pert * (length(yone) + length(yzero)), rate = 1),
                           ncol = num_pert)
@@ -14,9 +14,9 @@ R.s.miss.se.pert = function(num_pert, conv_res, sone, szero, yone, yzero,
                                     szero = szero,
                                     yone = yone,
                                     yzero = yzero,
-                                    ipw_formula = ipw_formula,
+                                    ipw.formula = ipw.formula,
                                     type = type,
-                                    max_it = max_it,
+                                    max.it = max.it,
                                     tol = tol)
   )
 

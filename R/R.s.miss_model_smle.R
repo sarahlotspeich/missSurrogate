@@ -1,10 +1,10 @@
 # Sieve maximum likelihood estimator -- Only type = "model"
 R.s.miss_model_smle <- function(sone, szero, yone, yzero,
                                 nonparam = TRUE,
-                                conv.res = NULL,
+                                conv_res = NULL,
                                 max.it = 1e4,
                                 tol = 1e-3,
-                                full.output = FALSE) {
+                                full_output = FALSE) {
   # sizes
   N0 <- length(szero)
   N1 <- length(sone)
@@ -40,16 +40,16 @@ R.s.miss_model_smle <- function(sone, szero, yone, yzero,
     prev_eta   <- 0.1
   }
 
-  # Use conv.res if provided
-  if (!is.null(conv.res)) {
-    if (!is.null(conv.res$betas)) prev_beta  <- conv.res$betas
-    if (!is.null(conv.res$sigma)) prev_sigma <- conv.res$sigma
-    if (nonparam && !is.null(conv.res$p0) && !is.null(conv.res$p1)) {
-      prev_p_z0 <- as.numeric(conv.res$p0)
-      prev_p_z1 <- as.numeric(conv.res$p1)
-    } else if (!nonparam && !is.null(conv.res$gamma) && !is.null(conv.res$eta)) {
-      prev_gamma <- conv.res$gamma
-      prev_eta   <- conv.res$eta
+  # Use conv_res if provided
+  if (!is.null(conv_res)) {
+    if (!is.null(conv_res$betas)) prev_beta  <- conv_res$betas
+    if (!is.null(conv_res$sigma)) prev_sigma <- conv_res$sigma
+    if (nonparam && !is.null(conv_res$p0) && !is.null(conv_res$p1)) {
+      prev_p_z0 <- as.numeric(conv_res$p0)
+      prev_p_z1 <- as.numeric(conv_res$p1)
+    } else if (!nonparam && !is.null(conv_res$gamma) && !is.null(conv_res$eta)) {
+      prev_gamma <- conv_res$gamma
+      prev_eta   <- conv_res$eta
     }
   }
 
@@ -128,7 +128,7 @@ R.s.miss_model_smle <- function(sone, szero, yone, yzero,
     # ---------- M-step ----------
     new_fit <- tryCatch(lm(Y ~ Z * S, data = cd, weights = phi_aug), error = function(e) NULL)
     if (is.null(new_fit)) {
-      if (full.output) {
+      if (full_output) {
         return(list(delta = NA, delta.s = NA, R.s = NA, betas = rep(NA,4), sigma = NA, p0 = NA, p1 = NA, alphas = c(NA,NA)))
       } else {
         return(list(delta = NA, delta.s = NA, R.s = NA))
@@ -206,7 +206,7 @@ R.s.miss_model_smle <- function(sone, szero, yone, yzero,
   } # end EM loop
 
   if (!converged) {
-    if (full.output) {
+    if (full_output) {
       return(list(delta = NA, delta.s = NA, R.s = NA, betas = rep(NA,4), sigma = NA, p0 = NA, p1 = NA, alphas = c(NA,NA)))
     } else {
       return(list(delta = NA, delta.s = NA, R.s = NA))
@@ -227,7 +227,7 @@ R.s.miss_model_smle <- function(sone, szero, yone, yzero,
   R_S     <- 1 - delta.s / delta
 
 
-  if (full.output) {
+  if (full_output) {
     return(list(delta = delta, delta.s = delta.s, R.s = R_S,
                 betas = prev_beta, sigma = prev_sigma, p0 = prev_p_z0, p1 = prev_p_z1, alphas = c(alpha0, alpha1)))
   } else {
