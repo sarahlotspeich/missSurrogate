@@ -22,7 +22,8 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
                                        yone = yone,
                                        yzero = yzero,
                                        type = type,
-                                       conf.int = FALSE)
+                                       conf.int = FALSE,
+                                       extrapolate = TRUE)
   } else { ## Otherwise, use IPW or SMLE to correct for it
     # Define TRUE/FALSE use IPW based on non-null weights supplied
     ipw = (!is.null(wone) & !is.null(wzero)) || ## either weights were supplied
