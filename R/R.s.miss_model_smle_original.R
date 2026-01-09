@@ -141,7 +141,7 @@ R.s.miss_model_smle_original = function(sone, szero, yone, yzero, conv.res, max.
                  data = cd,
                  weights = phi.aug)
     new.beta = as.numeric(new.fit$coefficients)
-    new.sigma = calc.sigma(new_fit) # sigma(new.fit)
+    new.sigma = calc.sigma(new.fit) # sigma(new.fit)
     ### Re-estimate empirical probabilities for distribution of S | Z
     #### Among the untreated (Z = 0)
     sum.phi.z0 = rowsum(x = phi.aug[cd$Z == 0], #### Sum over i = 1, ..., n of phi-hats...
