@@ -1,5 +1,5 @@
-R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
-                            type, ipw, smle, max.it, tol, ipw.formula) {
+R.s.miss.se.boot = function(num_boot, conv.res, sone, szero, yone, yzero,
+                            type, ipw, smle, max.it, tol, ipw.formula, orig.smle) {
   # Build long dataset: (y, z, s, w, m)
   long_dat = data.frame(y = c(yone, yzero),
                         z = rep(x = c(1, 0),
@@ -26,7 +26,8 @@ R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
                                     indices = ind_b,
                                     type = type,
                                     ipw.formula = ipw.formula,
-                                    conv_res = NULL,
+                                    orig.smle = orig.smle,
+                                    conv.res = NULL,
                                     max.it = max.it,
                                     tol = tol)
   }
@@ -42,9 +43,9 @@ R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
   var_R.s = var_all[3]
 
   ### Used to compute Wald-type confidence intervals
-  norm_ci_delta = conv_res$delta + c(-1.96, 1.96) * sqrt(var_delta)
-  norm_ci_delta.s = conv_res$delta.s + c(-1.96, 1.96) * sqrt(var_delta.s)
-  norm_ci_R.s = conv_res$R.s + c(-1.96, 1.96) * sqrt(var_R.s)
+  norm_ci_delta = conv.res$delta + c(-1.96, 1.96) * sqrt(var_delta)
+  norm_ci_delta.s = conv.res$delta.s + c(-1.96, 1.96) * sqrt(var_delta.s)
+  norm_ci_R.s = conv.res$R.s + c(-1.96, 1.96) * sqrt(var_R.s)
 
   ## Quantile-based
   quant_ci_all = apply(X = boot_quant,
@@ -72,30 +73,31 @@ R.s.miss.se.boot = function(num_boot, conv_res, sone, szero, yone, yzero,
 
 
 # Bootstrap resampling SEs
-boot_R.s.miss <- function(data, indices, type, ipw.formula, conv_res, max.it, tol) {
+boot_R.s.miss <- function(data, indices, type, ipw.formula, orig.smle, conv.res, max.it, tol) {
   ## Resample data with replacement (but stratified on treatment)
-  d <- data[indices, ]  
-  
-  ### Split into vectors 
+  d <- data[indices, ]
+
+  ### Split into vectors
   which_zzero = which(d$z == 0)
   which_zone = which(d$z == 1)
   Sd_zero = d$s[which_zzero]
   Sd_one = d$s[which_zone]
   Yd_zero = d$y[which_zzero]
   Yd_one = d$y[which_zone]
-  
-  res_d = R.s.miss.estimate(sone = Sd_one, 
-                            szero = Sd_zero, 
-                            yone = Yd_one, 
-                            yzero = Yd_zero, 
-                            wone = NULL, 
-                            wzero = NULL, 
-                            conv_res = conv_res, 
-                            type = type, 
-                            max.it = max.it, 
-                            tol = tol, 
-                            ipw.formula = ipw.formula)
-  
+
+  res_d = R.s.miss.estimate(sone = Sd_one,
+                            szero = Sd_zero,
+                            yone = Yd_one,
+                            yzero = Yd_zero,
+                            wone = NULL,
+                            wzero = NULL,
+                            conv.res = conv.res,
+                            type = type,
+                            max.it = max.it,
+                            tol = tol,
+                            ipw.formula = ipw.formula,
+                            orig.smle = orig.smle)
+
   return(with(res_d, c(delta, delta.s, R.s)))
 }
 

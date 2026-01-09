@@ -12,6 +12,7 @@
 #' @param tol (only for SMLE) scalar; tolerance between iterations in the EM algorithm used to define convergence, the default is \code{1E-3}.
 #' @param conf.int logical; if \code{TRUE}, variance estimates and 95% confidence intervals are included in output; if \code{FALSE} (the default), only point estimates are.
 #' @param ipw.formula (only for IPW) formula; if \code{conf.int = TRUE} and using IPW, the logistic regression formula needed to recalculate the probabilities of non-missing surrogates are needed.
+#' @param orig.smle (only for SMLE) logical; if \code{TRUE}, SMLE estimated using original code; if \code{FALSE} (the default), it is estimated using code debugged with ChatGPT.
 #' @return A list with the following elements:
 #' \describe{
 #'   \item{delta}{Estimated average treatment effect on the primary outcome.}
@@ -31,19 +32,19 @@
 
 R.s.miss = function(sone, szero, yone, yzero, wone = NULL, wzero = NULL,
                     type = "robust", max.it = 1E4, tol = 1E-3,
-                    conf.int = FALSE, ipw.formula = NULL) {
+                    conf.int = FALSE, ipw.formula = NULL, orig.smle = FALSE) {
   # Estimate parameters
   est_res = R.s.miss.estimate(sone = sone, szero = szero, ## surrogates outcomes
                               yone = yone, yzero = yzero, ## primary outcomes
                               wone = wone, wzero = wzero, ## weights (optional)
-                              type = type, max.it = max.it, tol = tol) ## other arguments
+                              type = type, max.it = max.it, tol = tol, orig.smle = orig.smle) ## other arguments
 
   # Estimate standard errors
   ## Bootstrap resampling
   if (conf.int) {
-    se_res = R.s.miss.se.boot(num_boot = 500, conv_res = est_res,
+    se_res = R.s.miss.se.boot(num_boot = 500, conv.res = est_res,
                               sone = sone, szero = szero, yone = yone, yzero = yzero,
-                              type = type, max.it = max.it, tol = tol, ipw.formula = ipw.formula)
+                              type = type, max.it = max.it, tol = tol, ipw.formula = ipw.formula, orig.smle = orig.smle)
   } else {
     ### Otherwise, just return point estimates (without SEs/CIs)
     return(est_res)

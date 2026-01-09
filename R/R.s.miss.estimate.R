@@ -1,4 +1,4 @@
-R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wone = NULL, wzero = NULL, conv_res = NULL, type, max.it, tol, ipw.formula = NULL) {
+R.s.miss.estimate = function(weight.perturb = NULL, sone, szero, yone, yzero, wone = NULL, wzero = NULL, conv.res = NULL, type, max.it, tol, ipw.formula = NULL, orig.smle) {
   ## Define sample sizes
   none = length(yone)
   nzero = length(yzero)
@@ -7,17 +7,17 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
   mone = as.numeric(!is.na(sone))
   mzero = as.numeric(!is.na(szero))
 
-  ### If weight_perturb provided, multiply surrogates and outcomes by it
-  if (!is.null(weight_perturb)) {
-    szero = szero * weight_perturb[1:nzero]
-    yzero = yzero * weight_perturb[1:nzero]
-    sone = sone * weight_perturb[-c(1:nzero)]
-    yone = yone * weight_perturb[-c(1:nzero)]
+  ### If weight.perturb provided, multiply surrogates and outcomes by it
+  if (!is.null(weight.perturb)) {
+    szero = szero * weight.perturb[1:nzero]
+    yzero = yzero * weight.perturb[1:nzero]
+    sone = sone * weight.perturb[-c(1:nzero)]
+    yone = yone * weight.perturb[-c(1:nzero)]
   }
 
   # Estimate parameters and SEs
   if (mean(mone) == 1 & mean(mzero) == 1) { ## Check for no missing data, in which case fit the usual
-    est_res = Rsurrogate::R.s.estimate(sone = sone,
+    est.res = Rsurrogate::R.s.estimate(sone = sone,
                                        szero = szero,
                                        yone = yone,
                                        yzero = yzero,
@@ -53,22 +53,22 @@ R.s.miss.estimate = function(weight_perturb = NULL, sone, szero, yone, yzero, wo
       }
 
       ## Using IPW to handle missing data
-      est_res = R.s.miss_ipw(sone = sone, szero = szero, ### surrogates outcomes
+      est.res = R.s.miss_ipw(sone = sone, szero = szero, ### surrogates outcomes
                              yone = yone, yzero = yzero, ### primary outcomes
                              wone = wone, wzero = wzero, ### weights (required)
                              type = type) ### type of PTE estimator
     } else if (type == "model") { # Wang & Taylor's approach
-      est_res = R.s.miss_model_smle(sone = sone,
+      est.res = R.s.miss_model_smle(sone = sone,
                                     szero = szero,
                                     yone = yone,
                                     yzero = yzero,
-                                    nonparam = TRUE,
-                                    conv_res = conv_res,
+                                    conv.res = conv.res,
                                     max.it = max.it,
-                                    tol = tol)
+                                    tol = tol,
+                                    orig.smle = orig.smle)
     }
   }
 
   ### Return point estimates
-  return(est_res)
+  return(est.res)
 }
