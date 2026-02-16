@@ -62,6 +62,11 @@ R.s.miss_model_smle_original = function(sone, szero, yone, yzero, conv.res, max.
   cd.miss = rbind(cd.miss.z0, cd.miss.z1) ### only those with missing surrogates
   cd = rbind(cd.nonmiss, cd.miss) ### all patients
 
+  ## Set up response vector / design matrix for WLSR
+  cd$SZ = cd$Z * cd$S ### add column to complete dataset for interaction
+  xm = data.matrix(cbind(int = 1, cd[, c("Z", "S", "SZ")]))
+  ym = matrix(data = cd[, "Y"], ncol = 1)
+
   # Conditional distribution of S given Z
   ## Empirical probabilities of S | Z = 0
   prev.p.z0 = p0.z0 = matrix(data = 1 / m.z0,
@@ -136,12 +141,24 @@ R.s.miss_model_smle_original = function(sone, szero, yone, yzero, conv.res, max.
     #### Add indicators for non-missing rows -----------------------------------
     phi.aug = c(rep(x = 1, times = (n0 + n1)), phi)
     ## M step
-    ### Re-fit the linear regression model
-    new.fit = lm(formula = Y ~ Z * S,
-                 data = cd,
-                 weights = phi.aug)
-    new.beta = as.numeric(new.fit$coefficients)
-    new.sigma = calc.sigma(new.fit) # sigma(new.fit)
+    ### Re-fit the linear regression model using weighted least-squares
+    # phi.W = diag(x = phi.aug,
+    #              nrow = length(phi.aug),
+    #              ncol = length(phi.aug))
+    # new.beta = solve(t(xm) %*% phi.W %*% xm) %*% t(xm) %*% phi.W %*% ym
+    # r.new.beta = ym - (xm %*% new.beta)
+    # new.sigma = (t(r.new.beta) %*% phi.W %*% r.new.beta) / trace(r.new.beta)
+    new.beta = solve(t(xm) %*% (phi.aug * xm)) %*%
+      t(xm) %*% (phi.aug * ym)
+    r.new.beta = ym -
+      (xm %*% new.beta)
+    new.sigma = (t(r.new.beta) %*% (phi.aug * r.new.beta)) /
+      (nrow(xm) - ncol(xm))
+    # new.fit = lm(formula = Y ~ Z * S,
+    #              data = cd,
+    #              weights = phi.aug)
+    # new.beta = as.numeric(new.fit$coefficients)
+    # new.sigma = calc.sigma(new.fit) # sigma(new.fit)
     ### Re-estimate empirical probabilities for distribution of S | Z
     #### Among the untreated (Z = 0)
     sum.phi.z0 = rowsum(x = phi.aug[cd$Z == 0], #### Sum over i = 1, ..., n of phi-hats...
