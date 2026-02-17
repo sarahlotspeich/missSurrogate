@@ -17,7 +17,7 @@ R.s.miss(
   tol = 0.001,
   conf.int = FALSE,
   ipw.formula = NULL,
-  orig.smle = FALSE
+  orig.smle = TRUE
 )
 }
 \arguments{
@@ -43,7 +43,7 @@ R.s.miss(
 
 \item{ipw.formula}{(only for IPW) formula; if \code{conf.int = TRUE} and using IPW, the logistic regression formula needed to recalculate the probabilities of non-missing surrogates are needed.}
 
-\item{orig.smle}{(only for SMLE) logical; if \code{TRUE}, SMLE estimated using original code; if \code{FALSE} (the default), it is estimated using code debugged with ChatGPT.}
+\item{orig.smle}{(only for SMLE) logical; if \code{TRUE}, SMLE estimated using original code (the default); if \code{FALSE}, it is estimated using code debugged with ChatGPT.}
 }
 \value{
 A list with the following elements:
