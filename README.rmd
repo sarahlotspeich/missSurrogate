@@ -33,7 +33,7 @@ To illustrate the various functions in the `missSurrogate` package, we simulate 
 | $Z$: Treatment assignment | $50/50$ assignment to control ($Z=0$) vs treatment ($Z=1$) |
 | $S$: Surrogate marker | $S\|Z \sim \textrm{Normal}(\mu = 5 + Z, \sigma^2 = 1 + 3Z)$ |
 | $Y$: Primary outcome | $Y = 2 + Z + 5S + Z \times S + \epsilon$, where $\epsilon \overset{\textrm{iid}}{\sim} \textrm{Normal}(\mu = 0, \sigma^2 = 1)$ |
-| $O$: Observation indicator for $S$ | $O\|Y \sim \textrm{Bernoulli}(\pi = 1 / \left\{1 + \exp(-0.015Y)\right\})$ |
+| $O$: Observation indicator for $S$ | $O\|Y \sim \textrm{Bernoulli}(\pi = 1 / \{1 + \exp(-0.015Y)\})$ |
 
 Since the probability that surrogate marker $S$ is non-missing depends on $Y$, this setting is **missingness at random (MAR)**. For any simulated patients with $O = 0$, their surrogate marker $S$ will be redacted/treated as missing. 
 

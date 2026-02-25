@@ -1,12 +1,6 @@
 Surrogate marker evaluation with missing data
 ================
 
-<p style="display:inline-block;">
-  <img src="miss_surrogate_hex.png" width="200" title="a woman with a tiara and pageant sash that says 'Miss Surrogate'">
-  <h1>Surrogate marker validation with missing data</h1>
-</p>
-
-
 ## Package Installation
 
 Installation of the `missSurrogate` from GitHub requires the
@@ -39,7 +33,7 @@ generated can be found in the table below.
 | $Z$: Treatment assignment | $50/50$ assignment to control ($Z=0$) vs treatment ($Z=1$) |
 | $S$: Surrogate marker | $S\|Z \sim \textrm{Normal}(\mu = 5 + Z, \sigma^2 = 1 + 3Z)$ |
 | $Y$: Primary outcome | $Y = 2 + Z + 5S + Z \times S + \epsilon$, where $\epsilon \overset{\textrm{iid}}{\sim} \textrm{Normal}(\mu = 0, \sigma^2 = 1)$ |
-| $O$: Observation indicator for $S$ | $O\|Y \sim \textrm{Bernoulli}(\pi = 1 / \left\{1 + \exp(-0.015Y)\right\})$ |
+| $O$: Observation indicator for $S$ | $O\|Y \sim \textrm{Bernoulli}(\pi = 1 / \{1 + \exp(-0.015Y)\})$ |
 
 Since the probability that surrogate marker $S$ is non-missing depends
 on $Y$, this setting is **missingness at random (MAR)**. For any
