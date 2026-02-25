@@ -1,6 +1,12 @@
 Surrogate marker evaluation with missing data
 ================
 
+<p style="display:inline-block;">
+  <img src="miss_surrogate_hex.png" width="200" title="a woman with a tiara and pageant sash that says 'Miss Surrogate'">
+  <h1>Surrogate marker validation with missing data</h1>
+</p>
+
+
 ## Package Installation
 
 Installation of the `missSurrogate` from GitHub requires the
