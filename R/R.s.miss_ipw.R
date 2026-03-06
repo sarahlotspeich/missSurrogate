@@ -47,8 +47,8 @@ R.s.miss_ipw = function(sone, szero, yone, yzero, wone, wzero, type) {
     cc_long_dat = long_dat[long_dat$R == 1, ] ### subset to complete cases
     cc_long_dat0 = cc_long_dat[cc_long_dat$Z == 0, ] ### further subset to controls
     cc_long_dat1 = cc_long_dat[cc_long_dat$Z == 1, ] ### further subset to cases
-    alpha0 = 1 / nrow(cc_long_dat0) * sum(cc_long_dat0$S * cc_long_dat0$W)
-    alpha1 = 1 / nrow(cc_long_dat1) * sum(cc_long_dat1$S * cc_long_dat1$W)
+    alpha0 = 1 / sum(cc_long_dat0$W) * sum(cc_long_dat0$S * cc_long_dat0$W)
+    alpha1 = 1 / sum(cc_long_dat1$W) * sum(cc_long_dat1$S * cc_long_dat1$W)
 
     ## Construct percent treatment effect explained
     delta = beta1 + (beta2 + beta3) * alpha1 - beta2 * alpha0
