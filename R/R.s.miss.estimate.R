@@ -1,4 +1,4 @@
-R.s.miss.estimate = function(weight.perturb = NULL, sone, szero, yone, yzero, wone = NULL, wzero = NULL, conv.res = NULL, type, max.it, tol, ipw.formula = NULL, orig.smle) {
+R.s.miss.estimate = function(weight.perturb = NULL, sone, szero, yone, yzero, wone = NULL, wzero = NULL, conv.res = NULL, type, max.it, tol, ipw.formula = NULL) {
   ## Define sample sizes
   none = length(yone)
   nzero = length(yzero)
@@ -64,8 +64,7 @@ R.s.miss.estimate = function(weight.perturb = NULL, sone, szero, yone, yzero, wo
                                     yzero = yzero,
                                     conv.res = conv.res,
                                     max.it = max.it,
-                                    tol = tol,
-                                    orig.smle = orig.smle)
+                                    tol = tol)
     }
   }
 

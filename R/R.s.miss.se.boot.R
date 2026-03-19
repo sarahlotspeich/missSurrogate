@@ -1,5 +1,5 @@
 R.s.miss.se.boot = function(num_boot, conv.res, sone, szero, yone, yzero,
-                            type, ipw, smle, max.it, tol, ipw.formula, orig.smle) {
+                            type, ipw, smle, max.it, tol, ipw.formula) {
   # Build long dataset: (y, z, s, w, m)
   long_dat = data.frame(y = c(yone, yzero),
                         z = rep(x = c(1, 0),
@@ -26,7 +26,6 @@ R.s.miss.se.boot = function(num_boot, conv.res, sone, szero, yone, yzero,
                                     indices = ind_b,
                                     type = type,
                                     ipw.formula = ipw.formula,
-                                    orig.smle = orig.smle,
                                     conv.res = NULL,
                                     max.it = max.it,
                                     tol = tol)
@@ -73,7 +72,7 @@ R.s.miss.se.boot = function(num_boot, conv.res, sone, szero, yone, yzero,
 
 
 # Bootstrap resampling SEs
-boot_R.s.miss <- function(data, indices, type, ipw.formula, orig.smle, conv.res, max.it, tol) {
+boot_R.s.miss <- function(data, indices, type, ipw.formula, conv.res, max.it, tol) {
   ## Resample data with replacement (but stratified on treatment)
   d <- data[indices, ]
 
@@ -95,8 +94,7 @@ boot_R.s.miss <- function(data, indices, type, ipw.formula, orig.smle, conv.res,
                             type = type,
                             max.it = max.it,
                             tol = tol,
-                            ipw.formula = ipw.formula,
-                            orig.smle = orig.smle)
+                            ipw.formula = ipw.formula)
 
   return(with(res_d, c(delta, delta.s, R.s)))
 }
